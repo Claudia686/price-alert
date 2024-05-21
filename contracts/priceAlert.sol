@@ -17,6 +17,7 @@ contract PriceAlert {
 
 // Set thresholds for a user
 function setThreshold(uint256 _threshold) public {
+	require(_threshold > 0, 'Threshold must be greater than zero');
     thresholds[msg.sender] = _threshold; // Store the threshold in the mapping
 	emit ThresholdSet(msg.sender, _threshold); // Emit ThresholdSet event
  }
