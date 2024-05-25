@@ -10,10 +10,14 @@ contract PriceAlert {
 	// Emit event when new thresholds is set
 	event ThresholdSet(address indexed user, uint256 thresholds);
 	
-	// constructor
 	constructor(address _priceFeedAddress) {
 	    priceFeed = AggregatorV3Interface(_priceFeedAddress);
 	}
+
+    // Getter function to retrieve the price feed address
+function getPriceFeedAddress() public view returns (address) {
+    return address(priceFeed);
+}
 
 // Set thresholds for a user
 function setThreshold(uint256 _threshold) public {
