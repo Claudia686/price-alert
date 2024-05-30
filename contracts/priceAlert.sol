@@ -8,7 +8,7 @@ contract PriceAlert {
 	mapping(address => uint256) public thresholds;
 
 	// Emit event when new thresholds is set
-	event ThresholdSet(address indexed user, uint256 thresholds);
+	event ThresholdSet(address indexed user, uint256 threshold);
 	
 	constructor(address _priceFeedAddress) {
 	    priceFeed = AggregatorV3Interface(_priceFeedAddress);
@@ -26,4 +26,13 @@ function setThreshold(uint256 _threshold) public {
 	emit ThresholdSet(msg.sender, _threshold); // Emit ThresholdSet event
  }
 
+ // Get latest price
+function getLatestPrice() public view returns (int256) {
+	require(address(priceFeed) != address(0), 'Invalid price feed address');
+    (, int256 price , , ,) = priceFeed.latestRoundData(); // Fetch latest price data from Chainlink
+ 	return price; // Return price
+ }
+
 }
+
+
