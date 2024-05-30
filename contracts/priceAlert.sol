@@ -32,6 +32,12 @@ function getLatestPrice() public view returns (int256) {
     (, int256 price , , ,) = priceFeed.latestRoundData(); // Fetch latest price data from Chainlink
  	return price; // Return price
  }
+ // Check alert
+function checkAlert() public view returns (bool) {
+    int256 latestPrice = getLatestPrice(); // Fetch the latest price
+    uint256 userThreshold = thresholds[msg.sender]; // Get the user's threshold from the mapping
+    return latestPrice >= int256(userThreshold); // Check if the latest price is greater than or equal to the threshold
+ }
 
 }
 

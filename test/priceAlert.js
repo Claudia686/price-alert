@@ -74,7 +74,7 @@ describe('PriceAlert', () => {
         })
 
         describe('Failure', async () => {
-            let priceAlertWithInvalidFeed 
+            let priceAlertWithInvalidFeed
             const invalidPriceFeedAddress = '0x0000000000000000000000000000000000000000'
 
             beforeEach(async () => {
@@ -90,4 +90,16 @@ describe('PriceAlert', () => {
         })
     })
 
+    describe('Check alert', () => {
+        describe('Success', async () => {
+            it('Should check if an alert is triggered', async () => {
+                const threshold = ethers.parseUnits('200')
+                await priceAlert.connect(user).setThreshold(threshold)
+
+                const higherPrice = ethers.parseUnits('250')
+                const alertTriggered = await priceAlert.checkAlert()
+                expect(alertTriggered).to.be.true;
+            })
+        })
+    })
 })
