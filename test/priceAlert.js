@@ -21,15 +21,15 @@ describe('PriceAlert', () => {
     describe('Deployment', () => {
         it('Should deploy with correct price feed address', async () => {
             // Verify that the price feed address matches the provided address
-            const storedpriceFeedAddress = await priceAlert.getPriceFeedAddress()
-            expect(storedpriceFeedAddress).to.equal(priceFeedAddress)
+            const storedPriceFeedAddress = await priceAlert.getPriceFeedAddress()
+            expect(storedPriceFeedAddress).to.equal(priceFeedAddress)
         })
     })
 
     describe('Set Threshold', () => {
         describe('Success', async () => {
             it('Should set threshold for a user', async () => {
-                const newThreshold = ethers.parseUnits('2', 18);
+                const newThreshold = 10
 
                 // Call setThreshold function 
                 const tx = await priceAlert.connect(deployer).setThreshold(newThreshold)
@@ -41,17 +41,17 @@ describe('PriceAlert', () => {
             })
 
             it('Emit threshold event', async () => {
-                const newThreshold = await ethers.parseUnits('1', 18)
-                const tx = await priceAlert.connect(user).setThreshold(newThreshold)
+                const Setthreshold = 5
+                const tx = await priceAlert.connect(user).setThreshold(Setthreshold)
 
                 // Verify if the ThresholdSet event is emitted correctly
-                await expect(tx).to.emit(priceAlert, 'ThresholdSet').withArgs(user, newThreshold)
+                await expect(tx).to.emit(priceAlert, 'ThresholdSet').withArgs(user, Setthreshold)
             })
         })
 
         describe('Failure', async () => {
             it('Revert with zero threshold', async () => {
-                const zeroThreshold = 0;
+                const zeroThreshold = 0
 
                 // Expect the setThreshold function to revert with a specific error message
                 expect(priceAlert.connect(user).setThreshold(zeroThreshold)).to.be.revertedWith('Threshold must be greater than zero')
@@ -85,7 +85,7 @@ describe('PriceAlert', () => {
 
             it('Rejects invalid price feed address', async () => {
                 // Expect the getLatestPrice function to revert with a specific error message
-                await expect(priceAlertWithInvalidFeed.getLatestPrice()).to.be.revertedWith('Invalid price feed address')
+                expect(priceAlertWithInvalidFeed.getLatestPrice()).to.be.revertedWith('Invalid price feed address')
             })
         })
     })
@@ -93,12 +93,22 @@ describe('PriceAlert', () => {
     describe('Check alert', () => {
         describe('Success', async () => {
             it('Should check if an alert is triggered', async () => {
-                const threshold = ethers.parseUnits('200')
-                await priceAlert.connect(user).setThreshold(threshold)
+                // Ser a Threshold for a user
+                const userThreshold = 5
+                await priceAlert.connect(user).setThreshold(userThreshold)
 
-                const higherPrice = ethers.parseUnits('250')
-                const alertTriggered = await priceAlert.checkAlert()
-                expect(alertTriggered).to.be.true;
+                // Call checkAlert to triggers an alert
+                const alertTriggered = await priceAlert.connect(user).checkAlert()
+
+                // Verify that the alert is triggered
+                expect(alertTriggered).to.be.true
+            })
+        })
+
+        describe('Failure', async () => {
+            it('Reverts when user Threshold is not set', async () => {
+                // Attempt to call checkAlert without setting a threshold for the user
+                expect(priceAlert.connect(user).checkAlert()).to.be.revertedWith('Threshold not set for the user')
             })
         })
     })

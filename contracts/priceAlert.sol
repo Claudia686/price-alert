@@ -33,12 +33,14 @@ function getLatestPrice() public view returns (int256) {
  	return price; // Return price
  }
  // Check alert
+
+
 function checkAlert() public view returns (bool) {
     int256 latestPrice = getLatestPrice(); // Fetch the latest price
     uint256 userThreshold = thresholds[msg.sender]; // Get the user's threshold from the mapping
+
+    require(userThreshold > 0, 'Threshold not set for the user');
     return latestPrice >= int256(userThreshold); // Check if the latest price is greater than or equal to the threshold
  }
 
 }
-
-
