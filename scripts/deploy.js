@@ -8,7 +8,6 @@ async function main() {
 	// Deploy the contract
 	const PriceAlert = await ethers.getContractFactory('PriceAlert');
 	const priceAlert = await PriceAlert.deploy(priceFeedAddress)	
-	// await priceAlert.deployed()
 
 	console.log(`priceAlert deployed to: ${await priceAlert.getAddress()}`)
 }

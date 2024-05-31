@@ -1,0 +1,38 @@
+body {
+ background-color: black;
+}
+
+.container {
+  max-width: 500px;
+  margin: 0 auto;
+  margin-top: 100px;
+  padding: 20px;
+  text-align: center;
+  background:darkgrey;
+  border-radius: 8px;
+  color: white;
+}
+
+h1 {
+  color: black;
+}
+
+button {
+  margin-top: 10px;
+  background-color: coral;
+  border-radius: 12px;
+  color: white;
+}
+
+button:hover {
+  background-color: lightgrey;
+  color: black;
+}
+
+input {
+  margin-top: 10px;
+  padding: 5px;
+  width: 50%; 
+  max-width: 200px;
+  border-radius: 5px;
+}
