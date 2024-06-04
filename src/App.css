@@ -1,5 +1,5 @@
 body {
- background-color: black;
+ background-color: white;
 }
 
 .container {
@@ -17,22 +17,37 @@ h1 {
   color: black;
 }
 
+.threshold-section {
+    margin-top: -20px;
+}
+
 button {
-  margin-top: 10px;
+   border: 2px solid lightgrey;
+  margin-top: 9px;
+  margin-bottom: 20px;
   background-color: coral;
   border-radius: 12px;
   color: white;
+  font-size: 14px;
 }
 
 button:hover {
+  border: 2px solid blanchedalmond;
   background-color: lightgrey;
   color: black;
 }
 
 input {
+  border: 1px solid palegreen;
   margin-top: 10px;
   padding: 5px;
   width: 50%; 
   max-width: 200px;
   border-radius: 5px;
 }
+
+.check-alert-section label {
+  color: black;
+}
+
+
