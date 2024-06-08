@@ -3,7 +3,7 @@ const hre = require("hardhat");
 async function main() {
 	// Setup accounts & variables
 	[deployer, user] = await ethers.getSigners()
-	const priceFeedAddress = '0xc7de7f4d4C9c991fF62a07D18b3E31e349833A18'
+	const priceFeedAddress = '0x14866185B1962B63C3Ea9E03Bc1da838bab34C19' // Sepolia DAI / USD
 
 	// Deploy the contract
 	const PriceAlert = await ethers.getContractFactory('PriceAlert');

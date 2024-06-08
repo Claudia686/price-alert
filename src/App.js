@@ -41,43 +41,17 @@ const thresholdHandler = async () => {
   await tx.wait()
 }
 
-// const getLatestPriceHandler = async () => {
-//   try {
-
-//   const latestPrice = await priceAlert.getLatestPrice()
-//    console.log('Latest price:', latestPrice.toString());
-//      setLatestPrice(latestPrice.toString())
-
-//     } catch (error) {
-//       console.error('Error getting latest price:', error);
-//     }
-//   }
-
-
 const getLatestPriceHandler = async () => {
-    const signer = await provider.getSigner()
+  try {
 
-  
-    try {
-      if (!priceAlert) {
-        console.error('PriceAlert contract is not initialized');
-        return;
-      }
+  const latestPrice = await priceAlert.getLatestPrice()
+   console.log('Latest price:', latestPrice.toString());
+     setLatestPrice(latestPrice.toString())
 
-      console.log('PriceAlert Contract:', priceAlert);
-      console.log('Calling getLatestPrice...');
-
-      const latestPrice = await priceAlert.getLatestPrice();
-      console.log('Raw latest price:', latestPrice);
-
-      // Assuming the price is returned with 8 decimal places
-      const formattedPrice = ethers.formatUnits(latestPrice, 8);
-      setLatestPrice(formattedPrice);
-      console.log('Formatted price:', formattedPrice);
     } catch (error) {
       console.error('Error getting latest price:', error);
     }
-  };
+  }
 
 
 const loadBlockchainData = async () => { 

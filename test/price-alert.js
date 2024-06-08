@@ -3,7 +3,7 @@ const { ethers } = require('hardhat')
 
 describe('PriceAlert', () => {
     let priceAlert, priceFeed, deployer, user
-    const priceFeedAddress = '0xc7de7f4d4C9c991fF62a07D18b3E31e349833A18'
+    const priceFeedAddress = '0x14866185B1962B63C3Ea9E03Bc1da838bab34C19' // Sepolia DAI / USD
 
     beforeEach(async () => {
         [deployer, user] = await ethers.getSigners();
@@ -48,9 +48,9 @@ describe('PriceAlert', () => {
     describe('Get Latest Price', () => {
         describe('Success', async () => {
             it('Should get the latest price', async () => {
-                const mockPrice = 341318228640216;
+                const mockPrice = 99987253;
 
-                await priceAlert.setThreshold(341318228640216);
+                await priceAlert.setThreshold(99987253);
                 const latestPrice = await priceAlert.getLatestPrice()
                 expect(latestPrice).to.equal(mockPrice)
             })
