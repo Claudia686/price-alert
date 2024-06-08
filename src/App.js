@@ -12,7 +12,10 @@ const [provider, setProvider] = useState(null)
 const [account, setAccount] = useState(null)
 const [priceAlert, setPriceAlert] = useState(null)
 const [result, setResult] = useState(null)
-const [isConnected, setIsConnected] = useState(null)
+const [isConnected, setIsConnected] = useState(false)
+const [threshold, setThreshold] = useState('')
+const [user, setUser] = useState(null)
+const [latestPrice, setLatestPrice] = useState(null)
 
 const connectHandler = async () => { 
 // Provides the blockchain connection to sign transactions with MetaMask
@@ -27,15 +30,65 @@ setAccount(account)
 setIsConnected(true)
 }
 
-const loadBlockchainData = async () => {  
+const thresholdHandler = async () => {
+  // set signer
+  const signer = await provider.getSigner()
+  const signerAddress = await signer.getAddress()
+
+  // Call setThreshold function 
+  const threshold = 1
+  const tx = await priceAlert.connect(signer).setThreshold(threshold)
+  await tx.wait()
+}
+
+// const getLatestPriceHandler = async () => {
+//   try {
+
+//   const latestPrice = await priceAlert.getLatestPrice()
+//    console.log('Latest price:', latestPrice.toString());
+//      setLatestPrice(latestPrice.toString())
+
+//     } catch (error) {
+//       console.error('Error getting latest price:', error);
+//     }
+//   }
+
+
+const getLatestPriceHandler = async () => {
+    const signer = await provider.getSigner()
+
+  
+    try {
+      if (!priceAlert) {
+        console.error('PriceAlert contract is not initialized');
+        return;
+      }
+
+      console.log('PriceAlert Contract:', priceAlert);
+      console.log('Calling getLatestPrice...');
+
+      const latestPrice = await priceAlert.getLatestPrice();
+      console.log('Raw latest price:', latestPrice);
+
+      // Assuming the price is returned with 8 decimal places
+      const formattedPrice = ethers.formatUnits(latestPrice, 8);
+      setLatestPrice(formattedPrice);
+      console.log('Formatted price:', formattedPrice);
+    } catch (error) {
+      console.error('Error getting latest price:', error);
+    }
+  };
+
+
+const loadBlockchainData = async () => { 
   // Get the network
   const { chainId } = await provider.getNetwork()
 
 // Connect to the contract, gets the address, abis & provider
   const address = '0x82A9286dB983093Ff234cefCea1d8fA66382876B'
   const priceAlert = new ethers.Contract(address, PriceAlert, provider)
-  setPriceAlert(priceAlert)
-}
+  setPriceAlert(priceAlert)  
+  }
 
 useEffect(() => {
     if (provider) {
@@ -44,43 +97,45 @@ useEffect(() => {
   }, [provider])
 
 return (
-   <div className="container">
+    <div className="container">
       <h1>Price Alert Dapp</h1>
       <button onClick={connectHandler}>
-      {isConnected? 'Wallet Connected': 'Connect Wallet'}</button>
-
-      <div className="threshold-section">
-        <h2>Set Threshold</h2>
-        <label htmlFor="threshold">Enter Threshold:</label>
-        <br />
-        <input
-          type="number"
-          id="threshold"
-          value="threshold"          
-           />
-
-           <div>
-        </div>
-      </div>
+        {isConnected ? 'Wallet Connected' : 'Connect Wallet'}
+      </button>
+      <br />
       <br />
 
-      <div className="get-latest-price-section"> 
-      <button onClick={getLatestPriceHandler}>Get Latest Price</button>
-       <div>
-          {result && <p>{result}</p>}
+      <div className="threshold-section">
+        <div>
+          <label>
+            Enter threshold:
+            <br />
+            <input
+              type="number"
+              value={threshold}
+              onChange={(e) => setThreshold(e.target.value)}
+            />
+          </label>
+          <br />
+          <button onClick={thresholdHandler}>Set Threshold</button>
+        </div>
+      </div>
+      
+      <div className="get-latest-price-section">
+        <button onClick={getLatestPriceHandler}>Get Latest Price</button>
+        <div>
+          {latestPrice && <p>Latest Price: {latestPrice}</p>}
         </div>
       </div>
 
       <div className="check-alert-section">
-      <br />
+        <br />
         <label>Check if the latest price meets or exceeds the threshold set.</label>
         <br />
         <button className="check-alert-button">Check Alert</button>
       </div>
     </div>
-
   );
-  }
+}
 
 export default App;
-
