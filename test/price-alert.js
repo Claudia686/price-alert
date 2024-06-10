@@ -9,14 +9,15 @@ describe('PriceAlert', () => {
         [deployer, user] = await ethers.getSigners();
         const PriceAlert = await ethers.getContractFactory('PriceAlert')
         priceAlert = await PriceAlert.deploy(priceFeedAddress)
-    })
-
+        
+         })
+   
     describe('Deployment', () => {
         it('Should deploy with correct price feed address', async () => {
             const storedPriceFeedAddress = await priceAlert.getPriceFeedAddress()
             expect(storedPriceFeedAddress).to.equal(priceFeedAddress)
+            })
         })
-    })
 
     describe('Set Threshold', () => {
         describe('Success', async () => {
@@ -92,5 +93,12 @@ describe('PriceAlert', () => {
             })
         })
     })
-})
+    })
+    
+
+
+
+
+
+
 

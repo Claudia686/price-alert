@@ -4,7 +4,8 @@ import './App.css';
 
 // ABIS
 import PriceAlert from './abis/price-alert.json'
-//Config
+
+// Config
 import config from './config.json'
 
 function App() {
@@ -18,20 +19,19 @@ const [user, setUser] = useState(null)
 const [latestPrice, setLatestPrice] = useState(null)
 
 const connectHandler = async () => { 
-// Provides the blockchain connection to sign transactions with MetaMask
+  // Provides the blockchain connection to sign transactions with MetaMask
   const provider = new ethers.BrowserProvider(window.ethereum)
   setProvider(provider)
 
 // Connect to MetaMask
 const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
-const account = ethers.getAddress(accounts[0])
-setAccount(account)
-
-setIsConnected(true)
+  const account = ethers.getAddress(accounts[0])
+  setAccount(account)
+  setIsConnected(true)
 }
 
 const thresholdHandler = async () => {
-  // set signer
+  // Set signer
   const signer = await provider.getSigner()
   const signerAddress = await signer.getAddress()
 
@@ -41,28 +41,26 @@ const thresholdHandler = async () => {
   await tx.wait()
 }
 
-const getLatestPriceHandler = async () => {
-  try {
-
-  const latestPrice = await priceAlert.getLatestPrice()
-   console.log('Latest price:', latestPrice.toString());
-     setLatestPrice(latestPrice.toString())
-
-    } catch (error) {
-      console.error('Error getting latest price:', error);
-    }
-  }
-
-
-const loadBlockchainData = async () => { 
+const loadBlockchainData = async () => {  
   // Get the network
   const { chainId } = await provider.getNetwork()
+  console.log('connected to chain:', chainId)
 
 // Connect to the contract, gets the address, abis & provider
-  const address = '0x82A9286dB983093Ff234cefCea1d8fA66382876B'
-  const priceAlert = new ethers.Contract(address, PriceAlert, provider)
-  setPriceAlert(priceAlert)  
+ const priceAlertAddress = config[chainId]?.PriceAlert?.address;
+ const priceAlert = new ethers.Contract(priceAlertAddress, PriceAlert, provider)
+ setPriceAlert(priceAlert)
   }
+
+  // Listen for network changes
+  useEffect(() => {
+    if (window.ethereum) {
+    window.ethereum.on('chainChanged', () => {
+    window.location.reload();
+      });
+    }
+  }, []);
+
 
 useEffect(() => {
     if (provider) {

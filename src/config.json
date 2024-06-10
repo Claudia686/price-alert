@@ -1,7 +1,13 @@
 {
 	"31337": {
-		"PriceAlert": {
-			"address": " 0x82A9286dB983093Ff234cefCea1d8fA66382876B"
+		"PriceAlert": { 
+			"address": "0xb6E9E76D2AF8546F30017b851FdFfeA0B21D4cDd"
 		}
-	}
+	},
+
+	"11155111": { 
+    "PriceAlert": {
+      "address": "0xbFdc228c83468b8a8Dcf1e8f2501f15eaDe5d5F7"
+    }
+  }
 }
