@@ -41,6 +41,11 @@ const thresholdHandler = async () => {
   await tx.wait()
 }
 
+const getLatestPriceHandler = async () => {
+  const latestPrice = await priceAlert.getLatestPrice()
+  setLatestPrice(latestPrice.toString())
+}
+
 const loadBlockchainData = async () => {  
   // Get the network
   const { chainId } = await provider.getNetwork()
