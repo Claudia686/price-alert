@@ -1,4 +1,5 @@
 [
+    
     {
       "inputs": [
         {
@@ -22,11 +23,11 @@
         {
           "indexed": false,
           "internalType": "uint256",
-          "name": "threshold",
+          "name": "priceLimit",
           "type": "uint256"
         }
       ],
-      "name": "ThresholdSet",
+      "name": "PriceLimitSet",
       "type": "event"
     },
     {
@@ -71,25 +72,12 @@
     {
       "inputs": [
         {
-          "internalType": "uint256",
-          "name": "_threshold",
-          "type": "uint256"
-        }
-      ],
-      "name": "setThreshold",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
           "internalType": "address",
           "name": "",
           "type": "address"
         }
       ],
-      "name": "thresholds",
+      "name": "priceLimits",
       "outputs": [
         {
           "internalType": "uint256",
@@ -99,7 +87,18 @@
       ],
       "stateMutability": "view",
       "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_priceLimit",
+          "type": "uint256"
+        }
+      ],
+      "name": "setPriceLimit",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
     }
-  
-
   ]

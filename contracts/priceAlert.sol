@@ -5,41 +5,39 @@ import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
 contract PriceAlert {
     AggregatorV3Interface internal priceFeed;
-	mapping(address => uint256) public thresholds;
+	mapping(address => uint256) public priceLimits;
 
-	// Emit event when new thresholds is set
-	event ThresholdSet(address indexed user, uint256 threshold);
+	// Emit event when new price limit is set
+	event PriceLimitSet(address indexed user, uint256 priceLimit);
 	
 	constructor(address _priceFeedAddress) {
-	     priceFeed = AggregatorV3Interface(_priceFeedAddress);
+	    priceFeed = AggregatorV3Interface(_priceFeedAddress);
     }
 
     // Getter function to retrieve the price feed address
-function getPriceFeedAddress() public view returns (address) {
+    function getPriceFeedAddress() public view returns (address) {
     return address(priceFeed);
-}
+    }
 
-// Set thresholds for a user
-function setThreshold(uint256 _threshold) public {
-	require(_threshold > 0, 'Threshold must be greater than zero');
-    thresholds[msg.sender] = _threshold; // Store the threshold in the mapping
-	emit ThresholdSet(msg.sender, _threshold); // Emit ThresholdSet event
- }
+    // Set price limit for a user
+    function setPriceLimit(uint256 _priceLimit) public {
+        require(_priceLimit > 0, 'Price limit must be greater than zero');
+        priceLimits[msg.sender] = _priceLimit; // Store the price limit in the mapping
+	    emit PriceLimitSet(msg.sender, _priceLimit); // Emit PriceLimitSet event
+    }
 
- // Get latest price
-function getLatestPrice() public view returns (int256) {
-	require(address(priceFeed) != address(0), 'Invalid price feed address');
-    (, int256 price , , ,) = priceFeed.latestRoundData(); // Fetch latest price data from Chainlink
- 	return price; // Return price
- }
+    // Get latest price
+    function getLatestPrice() public view returns (int256) {
+        require(address(priceFeed) != address(0), 'Invalid price feed address');
+        (, int256 price , , ,) = priceFeed.latestRoundData(); // Fetch latest price data from Chainlink
+ 	    return price; // Return price
+    }
  
- // Check alert
-function checkAlert() public view returns (bool) {
-    int256 latestPrice = getLatestPrice(); // Fetch the latest price
-    uint256 userThreshold = thresholds[msg.sender]; // Get the user's threshold from the mapping
-
-    require(userThreshold > 0, 'Threshold not set for the user');
-    return latestPrice >= int256(userThreshold); // Check if the latest price is greater than or equal to the threshold
- }
-
+    // Check alert
+    function checkAlert() public view returns (bool) {
+        int256 latestPrice = getLatestPrice(); // Fetch the latest price
+        uint256 userPriceLimit = priceLimits[msg.sender]; // Get the user's price limit from the mapping
+        require(userPriceLimit > 0, 'Price limit not set for the user');
+        return latestPrice >= int256(userPriceLimit); // Check if the latest price is greater than or equal to the price limit
+    }
 }
