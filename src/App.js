@@ -50,6 +50,16 @@ function App() {
     const getLatestPrice = ethers.formatUnits(latestPrice, 8)
     setLatestPrice(getLatestPrice)    
   }
+
+   const checkAlertHandler = async () => {
+    // Set signer
+    const signer = await provider.getSigner();
+
+    // Check if the latest price meets or exceeds the set price limit
+    const signerAddress = await signer.getAddress();
+    const alert = await priceAlert.connect(signer).checkAlert()
+    setCheckAlert(alert.toString())
+  }
   
   const loadBlockchainData = async () => {  
     // Get the network
