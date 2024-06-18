@@ -21,7 +21,7 @@ describe('PriceAlert', () => {
     describe('Set price limits', () => {
         describe('Success', async () => {
             it('Should set price limits for a user', async () => {
-                const newPriceLimit = ethers.parseUnits('2', 18)
+                const newPriceLimit = ethers.parseUnits('2', 8)
 
                 const tx = await priceAlert.connect(deployer).setPriceLimit(newPriceLimit)
                 await tx.wait()
@@ -31,7 +31,7 @@ describe('PriceAlert', () => {
             })
 
             it('Emit price limit set event', async () => {
-                const newPriceLimit = await ethers.parseUnits('1', 18)
+                const newPriceLimit = await ethers.parseUnits('1', 8)
                 const tx = await priceAlert.connect(user).setPriceLimit(newPriceLimit);
                 await expect(tx).to.emit(priceAlert, 'PriceLimitSet').withArgs(user.address, newPriceLimit)
             })

@@ -30,24 +30,27 @@ function App() {
   }
 
   const priceLimitHandler = async () => {
-    // Set signer
+    // Set signer    
     const signer = await provider.getSigner()
     const signerAddress = await signer.getAddress()
-    console.log('signerAddress:', signerAddress)
 
-    // Call setPriceLimit function 
-    const limit = 100
+    // Convert the entered price limit  
+    const limit = ethers.parseUnits(priceLimit, 8)
     const tx = await priceAlert.connect(signer).setPriceLimit(limit)
     await tx.wait()
-
-    const checkLimit = await priceAlert.priceLimits(signer.address)
   }
 
   const getLatestPriceHandler = async () => {
-    const latestPrice = await priceAlert.getLatestPrice()
-    setLatestPrice(latestPrice.toString()) 
-  }
+    // Set signer
+    const signer = await provider.getSigner();
+    const signerAddress = await signer.getAddress();
 
+    // Fetch the latest price from the smart contract and format it
+    const latestPrice = await priceAlert.getLatestPrice()
+    const getLatestPrice = ethers.formatUnits(latestPrice, 8)
+    setLatestPrice(getLatestPrice)    
+  }
+  
   const loadBlockchainData = async () => {  
     // Get the network
     const { chainId } = await provider.getNetwork()
@@ -56,7 +59,7 @@ function App() {
     // Connect to the contract, gets the address, ABIs & provider
     const priceAlertAddress = config[chainId]?.PriceAlert?.address
     const priceAlert = new ethers.Contract(priceAlertAddress, PriceAlert, provider)
-    setPriceAlert(priceAlert)
+    setPriceAlert(priceAlert) 
   }
 
   // Listen for network changes
@@ -110,8 +113,13 @@ function App() {
         <br />
         <label>Check if the latest price meets or exceeds the price limit set.</label>
         <br />
-        <button className="check-alert-button">Check Alert</button>
-      </div>
+        <button onClick={checkAlertHandler}>Check Alert</button>
+        </div>
+        { checkAlert !== null && (
+        <p>
+          Alert status: {checkAlert === 'true' ? 'True - Price limit met' : 'False - Price limit not met'}
+        </p>
+      )}
     </div>
   )
 }
