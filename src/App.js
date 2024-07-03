@@ -42,8 +42,8 @@ function App() {
 
   const getLatestPriceHandler = async () => {
     // Set signer
-    const signer = await provider.getSigner();
-    const signerAddress = await signer.getAddress();
+    const signer = await provider.getSigner()
+    const signerAddress = await signer.getAddress()
 
     // Fetch the latest price from the smart contract and format it
     const latestPrice = await priceAlert.getLatestPrice()
@@ -53,10 +53,10 @@ function App() {
 
    const checkAlertHandler = async () => {
     // Set signer
-    const signer = await provider.getSigner();
+    const signer = await provider.getSigner()
 
     // Check if the latest price meets or exceeds the set price limit
-    const signerAddress = await signer.getAddress();
+    const signerAddress = await signer.getAddress()
     const alert = await priceAlert.connect(signer).checkAlert()
     setCheckAlert(alert.toString())
   }
@@ -99,7 +99,7 @@ function App() {
       <div className="price-limit-section">
         <div>
           <label>
-            Enter price limit:
+            Enter price limit
             <br />
             <input
               type="number"
@@ -121,7 +121,7 @@ function App() {
 
        <div className="check-alert-section">
         <br />
-        <label>Check if the latest price meets or exceeds the price limit set.</label>
+        <label>Check if the latest price meets or exceeds the price limit set</label>
         <br />
         <button onClick={checkAlertHandler}>Check Alert</button>
         </div>
